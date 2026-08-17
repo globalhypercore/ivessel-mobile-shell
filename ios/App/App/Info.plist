@@ -83,5 +83,7 @@
 	<string>iVessel records the vessel's position for issues and logs.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>iVessel attaches photos from your library.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
