@@ -1,0 +1,31 @@
+{
+  "name": "ivessel-mobile-shell",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Capacitor shell wrapping the iVessel Lovable web app for iOS and Android",
+  "scripts": {
+    "sync": "cap sync",
+    "open:ios": "cap open ios",
+    "open:android": "cap open android",
+    "run:ios": "cap run ios",
+    "run:android": "cap run android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/app": "^8.1.1",
+    "@capacitor/browser": "^8.0.0",
+    "@capacitor/camera": "^8.2.2",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/geolocation": "^8.2.0",
+    "@capacitor/ios": "^8.0.0",
+    "@capacitor/push-notifications": "^8.0.0",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,75 @@
+# Codemagic CI config — builds the iVessel iOS app in the cloud (no Mac needed)
+# and uploads it to TestFlight. Android is built locally on Windows, so it's
+# optional here, but included so you can build both from the cloud if you want.
+#
+# SETUP (done once in the Codemagic UI, see BUILD-GUIDE.md section 4):
+#  - Connect this GitHub repo.
+#  - Add an "App Store Connect API key" integration (Codemagic → Teams → Integrations).
+#  - Create an iOS code-signing setup: Codemagic can auto-manage signing with that API key.
+#  - Set the environment variable group name below to match what you create in the UI.
+
+workflows:
+  ios-testflight:
+    name: iVessel iOS → TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: iVessel ASC Key   # name of the API key you add in Codemagic UI
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: co.ivessel.app
+      vars:
+        BUNDLE_ID: "co.ivessel.app"
+        APP_STORE_APPLE_ID: 0000000000       # replace with your app's Apple ID from App Store Connect
+      node: 18
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Add iOS platform & sync
+        script: |
+          npx cap add ios || echo "ios already added"
+          npx cap sync ios
+      - name: Set up code signing
+        script: xcode-project use-profiles
+      - name: Install CocoaPods
+        script: |
+          cd ios/App && pod install
+      - name: Build ipa
+        script: |
+          xcode-project build-ipa \
+            --workspace "ios/App/App.xcworkspace" \
+            --scheme "App"
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+
+  android-internal:
+    name: iVessel Android → Play internal (optional; you can also build locally)
+    instance_type: linux_x2
+    max_build_duration: 60
+    environment:
+      android_signing:
+        - ivessel_keystore        # name of the keystore you upload in Codemagic UI
+      vars:
+        PACKAGE_NAME: "co.ivessel.app"
+      node: 18
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Add Android platform & sync
+        script: |
+          npx cap add android || echo "android already added"
+          npx cap sync android
+      - name: Build signed AAB
+        script: |
+          cd android
+          ./gradlew bundleRelease
+    artifacts:
+      - android/app/build/outputs/**/*.aab
+    # To auto-publish to Play, add a Google Play integration and a publishing block here.
