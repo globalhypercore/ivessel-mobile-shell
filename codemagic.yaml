@@ -22,7 +22,7 @@ workflows:
       vars:
         BUNDLE_ID: "co.ivessel.portal"
         APP_STORE_APPLE_ID: 6478752942
-      node: 18
+      node: 22
       xcode: latest
       cocoapods: default
     scripts:
@@ -58,7 +58,7 @@ workflows:
         - ivessel_keystore        # name of the keystore you upload in Codemagic UI
       vars:
         PACKAGE_NAME: "co.ivessel.app"
-      node: 18
+      node: 22
     scripts:
       - name: Install dependencies
         script: npm ci
