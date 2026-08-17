@@ -18,10 +18,10 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: co.ivessel.app
+        bundle_identifier: co.ivessel.portal
       vars:
-        BUNDLE_ID: "co.ivessel.app"
-        APP_STORE_APPLE_ID: 0000000000       # replace with your app's Apple ID from App Store Connect
+        BUNDLE_ID: "co.ivessel.portal"
+        APP_STORE_APPLE_ID: 6478752942
       node: 18
       xcode: latest
       cocoapods: default
